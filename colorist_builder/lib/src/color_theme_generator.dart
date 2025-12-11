@@ -22,6 +22,17 @@ class ColoristThemeGenerator extends GeneratorForAnnotation<ColorTheme> {
 
     final className = element.name;
 
+    final colorThemeAnnotation =
+        annotation.peek('colorsGetterGeneration')?.objectValue;
+    final colorsGetterGenerationOption = colorThemeAnnotation != null
+        ? ColorsGetterGeneration.values.firstWhere(
+            (e) =>
+                e.name ==
+                colorThemeAnnotation.getField('_name')?.toStringValue(),
+            orElse: () => ColorsGetterGeneration.none,
+          )
+        : ColorsGetterGeneration.auto;
+
     // Find the factory constructor
     final factoryCtor = element.constructors.firstWhere(
       (ctor) => ctor.isFactory,
@@ -101,6 +112,15 @@ class ColoristThemeGenerator extends GeneratorForAnnotation<ColorTheme> {
       buffer.writeln('\n');
     }
 
+    // Add missing null getters for themeData or cupertinoThemeData if not defined
+    if (!_hasMaterialThemeGetter(element)) {
+      buffer.writeln('  ThemeData? get themeData => null;');
+    }
+
+    if (!_hasCupertinoThemeGetter(element)) {
+      buffer.writeln('  CupertinoThemeData? get cupertinoThemeData => null;');
+    }
+
     buffer.writeln('\n}\n');
 
     // === THEME EXTENSION ===
@@ -147,19 +167,95 @@ class ColoristThemeGenerator extends GeneratorForAnnotation<ColorTheme> {
     buffer.writeln('}\n');
 
     // === CONTEXT EXTENSION ===
-    buffer.writeln(
-        '// **************************************************************************');
-    buffer.writeln('// Context extension for color access');
-    buffer.writeln(
-        '// Use \'context.colors\' to access active colors defined in $className');
-    buffer.writeln(
-        '// **************************************************************************\n');
 
-    buffer.writeln('extension ${className}BuildContextX on BuildContext {');
-    buffer.writeln('  $extName get colors =>');
-    buffer.writeln('      Theme.of(this).extension<$extName>() as $extName;');
-    buffer.writeln('}\n');
+    if (colorsGetterGenerationOption != ColorsGetterGeneration.none) {
+      buffer.writeln(
+          '// **************************************************************************');
+      buffer.writeln('// Context extension for color access');
+      buffer.writeln(
+          '// Use \'context.colors\' to access active colors defined in $className');
+      buffer.writeln(
+          '// **************************************************************************\n');
+
+      buffer.writeln('extension ${className}BuildContextX on BuildContext {');
+
+      switch (colorsGetterGenerationOption) {
+        case ColorsGetterGeneration.none:
+          break;
+        case ColorsGetterGeneration.material:
+          // Material getter
+          buffer.writeln('  $extName get colors =>');
+          buffer.writeln(
+              '      Theme.of(this).extension<$extName>() as $extName;');
+          break;
+        case ColorsGetterGeneration.cupertino:
+          // Cupertino getter
+          buffer.writeln('  $extName get colors =>');
+          buffer.writeln(
+              '      this.themeManager.currentTheme.themeExtension as $extName;');
+          break;
+        case ColorsGetterGeneration.both:
+          // Material getter
+          buffer.writeln('  $extName get colors =>');
+          buffer.writeln(
+              '      Theme.of(this).extension<$extName>() as $extName;');
+
+          buffer.writeln('\n');
+
+          // Cupertino getter
+          buffer.writeln('  $extName get cupertinoColors =>');
+          buffer.writeln(
+              '      this.themeManager.currentTheme.themeExtension as $extName;');
+          break;
+        case ColorsGetterGeneration.auto:
+          for (var getter in element.getters) {
+            if (_isMaterialThemeGetter(getter)) {
+              // Material getter
+              buffer.writeln('  $extName get colors =>');
+              buffer.writeln(
+                  '      Theme.of(this).extension<$extName>() as $extName;');
+            } else if (_isCupertinoThemeGetter(getter)) {
+              String getterName = 'colors';
+              if (_hasMaterialThemeGetter(element)) {
+                getterName = 'cupertinoColors';
+                buffer.writeln('\n');
+              }
+
+              // Cupertino getter
+              buffer.writeln('  $extName get $getterName =>');
+              buffer.writeln(
+                  '      this.themeManager.currentTheme.themeExtension as $extName;');
+            }
+          }
+          break;
+      }
+
+      buffer.writeln('}\n');
+    }
 
     return buffer.toString();
+  }
+
+  bool _isMaterialThemeGetter(GetterElement getter) {
+    final displayName = getter.returnType.getDisplayString();
+    return displayName == 'ThemeData' || displayName == 'ThemeData?';
+  }
+
+  bool _isCupertinoThemeGetter(GetterElement getter) {
+    final displayName = getter.returnType.getDisplayString();
+    return displayName == 'CupertinoThemeData' ||
+        displayName == 'CupertinoThemeData?';
+  }
+
+  bool _hasMaterialThemeGetter(ClassElement element) {
+    return element.getters.any(
+      (getter) => _isMaterialThemeGetter(getter),
+    );
+  }
+
+  bool _hasCupertinoThemeGetter(ClassElement element) {
+    return element.getters.any(
+      (getter) => _isCupertinoThemeGetter(getter),
+    );
   }
 }

@@ -13,6 +13,9 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   /// Change this flag to switch between MaterialApp and CupertinoApp example
+  /// If you want to run the app with CupertinoApp theme, make sure to run build runner locally,
+  /// and change relevant preference in the [AppColorTheme] file.
+  /// Generated colors getter does not work the same for two app types.
   final bool isMaterialApp = true;
 
   @override
@@ -28,7 +31,7 @@ class MyApp extends StatelessWidget {
             // initialBrightness: Brightness.dark,
             builder: (currentTheme) {
               /// Your [MaterialApp] widget should use the [ThemeData] `currentTheme` provided by [ThemeManager]'s builder
-              /// Colors are made eccesible via extensions on BuildContext -> `context.colors`
+              /// Colors are made accesible via extensions on BuildContext -> `context.colors`
               return MaterialApp(
                 title: 'Colorist Demo',
                 theme: currentTheme,
@@ -54,7 +57,5 @@ class MyApp extends StatelessWidget {
 
     /// Note: Your [ThemeManager] will support either a `builder` or a `cupertinoBuilder`. You cannot define both at the same time.
     /// You also must provide at least one of them, otherwise, an exception will be thrown.
-    /// Depending on the App base widget you wish to use, make sure to implement a non-null getter for your app's color schema for
-    /// themeData or cupertinoThemeData appropriately.
   }
 }

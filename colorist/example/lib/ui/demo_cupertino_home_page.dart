@@ -9,7 +9,7 @@ class DemoCupertinoHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-      backgroundColor: context.colors.canvas,
+      backgroundColor: context.cupertinoColors.canvas,
       navigationBar: CupertinoNavigationBar(
         leading: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -19,7 +19,7 @@ class DemoCupertinoHomePage extends StatelessWidget {
             Text(
               'Let\'s explore color palettes',
               style: context.textTheme.labelLarge!.copyWith(
-                color: context.colors.textSecondary,
+                color: context.cupertinoColors.textSecondary,
               ),
             ),
           ],
@@ -81,7 +81,7 @@ class DemoCupertinoHomePage extends StatelessWidget {
             ),
             CupertinoTabBar(
               height: 70,
-              backgroundColor: context.colors.canvas,
+              backgroundColor: context.cupertinoColors.canvas,
               currentIndex: context.themeManager.themes.indexOf(context.themeManager.currentTheme),
               onTap: (index) {
                 context.themeManager.setTheme(context.themeManager.themes[index]);
@@ -120,8 +120,8 @@ class _DemoCardCupertino extends StatelessWidget {
           borderRadius: BorderRadius.circular(20),
           gradient: LinearGradient(
             colors: [
-              context.colors.cardGradientStart,
-              context.colors.cardGradientEnd,
+              context.cupertinoColors.cardGradientStart,
+              context.cupertinoColors.cardGradientEnd,
             ],
           ),
         ),
@@ -140,20 +140,20 @@ class _DemoCardCupertino extends StatelessWidget {
                   CupertinoButton(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     borderRadius: BorderRadius.circular(20),
-                    color: context.colors.white.withAlpha(50),
+                    color: context.cupertinoColors.white.withAlpha(50),
                     onPressed: () {},
                     child: Row(
                       children: [
                         Icon(
                           CupertinoIcons.globe,
                           size: 18,
-                          color: context.colors.white,
+                          color: context.cupertinoColors.white,
                         ),
                         const SizedBox(width: 6),
                         Text(
                           'ITALY',
                           style: context.textTheme.bodyLarge!.copyWith(
-                            color: context.colors.white,
+                            color: context.cupertinoColors.white,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -166,14 +166,14 @@ class _DemoCardCupertino extends StatelessWidget {
               Text(
                 'Michelangelo Buonarroti',
                 style: context.textTheme.titleLarge!.copyWith(
-                  color: context.colors.white,
+                  color: context.cupertinoColors.white,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               Text(
                 'Sculptor, painter, architect, and poet',
                 style: context.textTheme.bodyMedium!.copyWith(
-                  color: context.colors.white,
+                  color: context.cupertinoColors.white,
                 ),
               ),
             ],
@@ -203,7 +203,7 @@ class _ArtCardCupertino extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Container(
         decoration: BoxDecoration(
-          color: context.colors.cardBackground,
+          color: context.cupertinoColors.cardBackground,
           borderRadius: BorderRadius.circular(16),
         ),
         padding: const EdgeInsets.all(16),
@@ -216,20 +216,20 @@ class _ArtCardCupertino extends StatelessWidget {
                   Text(
                     title,
                     style: context.textTheme.titleMedium!.copyWith(
-                      color: context.colors.text,
+                      color: context.cupertinoColors.text,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   Text(
                     artist,
                     style: context.textTheme.bodyMedium!.copyWith(
-                      color: context.colors.textSecondary,
+                      color: context.cupertinoColors.textSecondary,
                     ),
                   ),
                   Text(
                     year.toString(),
                     style: context.textTheme.labelMedium!.copyWith(
-                      color: context.colors.textTernary,
+                      color: context.cupertinoColors.textTernary,
                       fontWeight: FontWeight.bold,
                     ),
                   ),

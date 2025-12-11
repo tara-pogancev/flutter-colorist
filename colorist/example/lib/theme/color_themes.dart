@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 part 'color_themes.g.dart';
 
-@ColorTheme(name: 'Primary app theme schema')
+@ColorTheme(name: 'Primary app theme schema', colorsGetterGeneration: ColorsGetterGeneration.auto)
 abstract class AppColorTheme with _$AppColorTheme {
   const factory AppColorTheme({
     required Brightness brightness,
@@ -21,10 +21,10 @@ abstract class AppColorTheme with _$AppColorTheme {
   }) = _AppColorTheme;
 
   @override
-  ThemeData? get themeData => MaterialAppTheme.getForColorTheme(this);
+  ThemeData get themeData => MaterialAppTheme.getForColorTheme(this);
 
   @override
-  CupertinoThemeData? get cupertinoThemeData => CupertinoAppTheme.getForColorTheme(this);
+  CupertinoThemeData get cupertinoThemeData => CupertinoAppTheme.getForColorTheme(this);
 }
 
 final Map<String, AppColorTheme> appColorThemes = {
@@ -54,7 +54,7 @@ final Map<String, AppColorTheme> appColorThemes = {
     white: Colors.white,
   ),
 
-  'forest': const AppColorTheme(
+  'dark_forest': const AppColorTheme(
     brightness: Brightness.dark,
     primary: Color(0xFF2F5D3E),
     cardBackground: Color.fromARGB(255, 51, 84, 54),
