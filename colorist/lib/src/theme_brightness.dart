@@ -24,4 +24,18 @@ extension ThemeBrightnessX on ThemeBrightness {
         return WidgetsBinding.instance.platformDispatcher.platformBrightness;
     }
   }
+
+  /// Returns a human-readable name for the [ThemeBrightness] value.
+  /// Feel free to override this with your own extension or helper function
+  /// for localization or custom naming.
+  String get name {
+    switch (this) {
+      case ThemeBrightness.light:
+        return "Light";
+      case ThemeBrightness.dark:
+        return "Dark";
+      case ThemeBrightness.system:
+        return "System";
+    }
+  }
 }

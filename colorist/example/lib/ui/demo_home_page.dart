@@ -1,5 +1,6 @@
 import 'package:colorist/colorist.dart';
 import 'package:example/theme/color_themes.dart';
+import 'package:example/ui/colorist_theming_widgets_demo.dart';
 import 'package:flutter/material.dart';
 
 class DemoHomePage extends StatelessWidget {
@@ -34,8 +35,7 @@ class DemoHomePage extends StatelessWidget {
           const Divider(
             height: 48,
           ),
-          const ColoristThemeDebugWidget(),
-          const ThemeBrightnessSwitch(),
+          const ColoristThemingWidgetsDemo(),
           const Divider(
             height: 48,
           ),

@@ -1,25 +1,26 @@
 import 'package:colorist/colorist.dart';
 import 'package:flutter/material.dart';
 
+/// A switch tile that allows toggling between light and dark theme brightness
+/// using Colorist's ThemeManager.
 class ThemeBrightnessSwitch extends StatelessWidget {
   const ThemeBrightnessSwitch({
     super.key,
     this.switchOnValue = Brightness.dark,
     this.label = "Dark mode enabled",
-    this.subtitle = "Enable dark mode for the app",
+    this.subtitle,
+    this.hideSubtitle = false,
   });
 
   final Brightness switchOnValue;
   final String label;
-  final String subtitle;
+  final String? subtitle;
+  final bool hideSubtitle;
 
   @override
   Widget build(BuildContext context) {
-    // This will cause the widget to rebuild when theme or brightness changes
-    final controller = ThemeManager.of(context);
-
     return SwitchListTile(
-      value: controller.brightness == switchOnValue,
+      value: context.themeManager.brightness.dart == switchOnValue,
       onChanged: (value) {
         if (value) {
           context.themeManager.setBrightness(switchOnValue == Brightness.dark
@@ -32,7 +33,10 @@ class ThemeBrightnessSwitch extends StatelessWidget {
         }
       },
       title: Text(label),
-      subtitle: Text(subtitle),
+      subtitle: (hideSubtitle)
+          ? null
+          : Text(subtitle ??
+              "Enable ${switchOnValue == Brightness.dark ? "dark" : "light"} mode for the app"),
     );
   }
 }

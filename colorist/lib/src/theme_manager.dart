@@ -34,7 +34,6 @@ class _ThemeManagerState<T extends ColorThemeSchema>
     extends State<ThemeManager<T>> {
   late T _currentTheme;
   late ThemeBrightness _brightness;
-  late ThemeManagerController<T> _controller;
 
   @override
   void initState() {
@@ -60,14 +59,6 @@ class _ThemeManagerState<T extends ColorThemeSchema>
       _brightness = (widget.initialTheme!.brightness == Brightness.light)
           ? ThemeBrightness.light
           : ThemeBrightness.dark;
-      _controller = ThemeManagerController<T>._(
-        currentTheme: _currentTheme,
-        brightness: _brightness.dart,
-        setTheme: setTheme,
-        setBrightness: setBrightness,
-        toggleBrightness: toggleBrightness,
-        themes: widget.themes,
-      );
       return;
     }
 
@@ -84,14 +75,6 @@ class _ThemeManagerState<T extends ColorThemeSchema>
         _currentTheme = widget.themes.first;
       }
 
-      _controller = ThemeManagerController<T>._(
-        currentTheme: _currentTheme,
-        brightness: _brightness.dart,
-        setTheme: setTheme,
-        setBrightness: setBrightness,
-        toggleBrightness: toggleBrightness,
-        themes: widget.themes,
-      );
       return;
     }
 
@@ -107,39 +90,25 @@ class _ThemeManagerState<T extends ColorThemeSchema>
     }
 
     _brightness = _currentTheme.themeBrightness;
-
-    _controller = ThemeManagerController<T>._(
-      currentTheme: _currentTheme,
-      brightness: _brightness.dart,
-      setTheme: setTheme,
-      setBrightness: setBrightness,
-      toggleBrightness: toggleBrightness,
-      themes: widget.themes,
-    );
   }
 
-  void _updateController() {
-    _controller = ThemeManagerController<T>._(
-      currentTheme: _currentTheme,
-      brightness: _brightness.dart,
-      setTheme: setTheme,
-      setBrightness: setBrightness,
-      toggleBrightness: toggleBrightness,
-      themes: widget.themes,
-    );
-  }
-
+  /// Set app's current theme. This will also override current brightness to match the theme's brightness.
+  /// Even if app's brightness is set to system, the theme's brightness will be applied.
+  /// If your app only supports light and dark theme, consider using [setBrightness], or [toggleBrightness] instead.
+  /// This function is more useful if you have multiple themes with various brightness settings, where the theme colors
+  /// are more important than the brightness setting. You may also implement a custom brightness toggle logic in this case.
   void setTheme(T theme) {
     setState(() {
       _currentTheme = theme;
-      _updateController();
+      _brightness = theme.themeBrightness;
     });
   }
 
+  /// Set app's current brightness settings. If possible, first available theme matching desired brightness will be applied.
+  /// System brightness will prioritise device's settings.
   void setBrightness(ThemeBrightness brightness) {
     setState(() {
       _brightness = brightness;
-      _updateController();
     });
 
     if (_currentTheme.themeBrightness == brightness) {
@@ -150,10 +119,14 @@ class _ThemeManagerState<T extends ColorThemeSchema>
         widget.themes.firstWhereOrNull((t) => t.brightness == brightness.dart);
 
     if (targetTheme != null) {
-      setTheme(targetTheme);
+      setState(() {
+        _currentTheme = targetTheme;
+      });
     }
   }
 
+  /// Toggle between [Brightness.light] and [Brightness.dark] theme mode.
+  /// If possible, first available theme matching desired brightness will be applied.
   void toggleBrightness() {
     setBrightness(
       _currentTheme.brightness == Brightness.light
@@ -164,8 +137,17 @@ class _ThemeManagerState<T extends ColorThemeSchema>
 
   @override
   Widget build(BuildContext context) {
+    final controller = ThemeManagerController<T>._(
+      currentTheme: _currentTheme,
+      brightness: _brightness,
+      setTheme: setTheme,
+      setBrightness: setBrightness,
+      toggleBrightness: toggleBrightness,
+      themes: widget.themes,
+    );
+
     return _InheritedThemeManager(
-      controller: _controller,
+      controller: controller,
       child: (widget.builder != null)
           ? widget.builder!(_currentTheme.themeData!)
           : widget.cupertinoBuilder!(_currentTheme.cupertinoThemeData!),
@@ -175,7 +157,7 @@ class _ThemeManagerState<T extends ColorThemeSchema>
 
 class ThemeManagerController<T extends ColorThemeSchema> {
   final T currentTheme;
-  final Brightness brightness;
+  final ThemeBrightness brightness;
   final List<T> themes;
   final void Function(T) setTheme;
   final void Function(ThemeBrightness) setBrightness;
@@ -200,7 +182,8 @@ class _InheritedThemeManager extends InheritedWidget {
   });
 
   @override
-  bool updateShouldNotify(_InheritedThemeManager oldWidget) =>
-      controller.currentTheme != oldWidget.controller.currentTheme ||
-      controller.brightness != oldWidget.controller.brightness;
+  bool updateShouldNotify(_InheritedThemeManager oldWidget) {
+    return controller.currentTheme != oldWidget.controller.currentTheme ||
+        controller.brightness != oldWidget.controller.brightness;
+  }
 }

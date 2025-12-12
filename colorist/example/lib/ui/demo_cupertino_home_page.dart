@@ -1,5 +1,6 @@
 import 'package:colorist/colorist.dart';
 import 'package:example/theme/color_themes.dart';
+import 'package:example/ui/colorist_theming_widgets_demo.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart' show Image, BoxFit, CircleAvatar, Divider; // For Image.asset only
 
@@ -38,9 +39,16 @@ class DemoCupertinoHomePage extends StatelessWidget {
                   const SliverToBoxAdapter(child: SizedBox(height: 16)),
                   const SliverToBoxAdapter(child: _DemoCardCupertino()),
                   const SliverToBoxAdapter(
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(vertical: 24),
-                      child: Divider(),
+                    child: Column(
+                      children: [
+                        Divider(
+                          height: 48,
+                        ),
+                        ColoristThemingWidgetsDemo(),
+                        Divider(
+                          height: 48,
+                        ),
+                      ],
                     ),
                   ),
                   SliverToBoxAdapter(
