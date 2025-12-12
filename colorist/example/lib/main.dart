@@ -13,9 +13,6 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   /// Change this flag to switch between MaterialApp and CupertinoApp example
-  /// If you want to run the app with CupertinoApp theme, make sure to run build runner locally,
-  /// and change relevant preference in the [AppColorTheme] file.
-  /// Generated colors getter does not work the same for two app types.
   final bool isMaterialApp = true;
 
   @override
@@ -27,8 +24,8 @@ class MyApp extends StatelessWidget {
         /// MATERIAL APP EXAMPLE
         ? ThemeManager<AppColorTheme>(
             themes: appColorThemes.values.toList(),
-            // initialTheme: appColorThemes['ocean'],
-            // initialBrightness: Brightness.dark,
+            initialTheme: appColorThemes['ocean'],
+            initialBrightness: ThemeBrightness.system,
             builder: (currentTheme) {
               /// Your [MaterialApp] widget should use the [ThemeData] `currentTheme` provided by [ThemeManager]'s builder
               /// Colors are made accesible via extensions on BuildContext -> `context.colors`
@@ -42,11 +39,12 @@ class MyApp extends StatelessWidget {
         /// CUPERTINO APP EXAMPLE
         : ThemeManager<AppColorTheme>(
             themes: appColorThemes.values.toList(),
-            // initialTheme: appColorThemes['ocean'],
-            // initialBrightness: Brightness.dark,
+            initialTheme: appColorThemes['ocean'],
+            initialBrightness: ThemeBrightness.system,
             cupertinoBuilder: (curentTheme) {
               /// CupertinoApp widget should use [CupertinoThemeData] `curentTheme` provided by [ThemeManager]'s cupertinoBuilder
               /// Colors are made eccesible via extensions on BuildContext -> `context.colors`
+              /// In a special case where you provide both ThemeData and CupertinoThemeData, cupertino colors are accessible via `context.cupertinoColors`
               return CupertinoApp(
                 title: 'Colorist Demo',
                 theme: curentTheme,

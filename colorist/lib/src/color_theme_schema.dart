@@ -1,5 +1,4 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:colorist/colorist.dart';
 
 /// Schema for color themes
 ///
@@ -19,4 +18,10 @@ abstract class ColorThemeSchema {
   ThemeData? get themeData;
   ThemeExtension<dynamic> get themeExtension;
   CupertinoThemeData? get cupertinoThemeData;
+}
+
+extension ColorThemeSchemaX on ColorThemeSchema {
+  ThemeBrightness get themeBrightness => (brightness == Brightness.light)
+      ? ThemeBrightness.light
+      : ThemeBrightness.dark;
 }

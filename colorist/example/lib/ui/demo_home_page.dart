@@ -34,6 +34,11 @@ class DemoHomePage extends StatelessWidget {
           const Divider(
             height: 48,
           ),
+          const ColoristThemeDebugWidget(),
+          const ThemeBrightnessSwitch(),
+          const Divider(
+            height: 48,
+          ),
           Text(
             'Traditional paint',
             style: context.textTheme.headlineMedium,

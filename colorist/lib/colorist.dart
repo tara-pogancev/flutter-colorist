@@ -5,4 +5,6 @@ export 'package:flutter/material.dart'
 
 export 'src/color_theme_schema.dart';
 export 'src/colorist_extensions.dart';
-export 'src/theme_manager/theme_manager.dart';
+export 'src/theme_brightness.dart';
+export 'src/theme_manager.dart';
+export 'src/theme_manager_widgets.dart';
