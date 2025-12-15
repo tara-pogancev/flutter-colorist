@@ -1,6 +1,7 @@
 // ignore: depend_on_referenced_packages
 import 'package:collection/collection.dart';
 import 'package:colorist/colorist.dart';
+import 'package:colorist/src/colorist_preferences/colorist_preferences.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -35,10 +36,13 @@ class _ThemeManagerState<T extends ColorThemeSchema>
   late T _currentTheme;
   late ThemeBrightness _brightness;
 
+  final ColoristPreferences _preferences = ColoristPreferences();
+
   @override
   void initState() {
     super.initState();
 
+    // Initial checks regarding root widget configuration
     if (widget.themes.isEmpty) {
       throw Exception('ThemeManager requires at least one theme');
     }
@@ -53,12 +57,48 @@ class _ThemeManagerState<T extends ColorThemeSchema>
           'ThemeManager requires either a builder (for MaterialApp) or a cupertinoBuilder (for CupertinoApp).');
     }
 
+    _currentTheme = widget.themes.first;
+    _brightness = ThemeBrightness.system;
+
+    setupThemeManager();
+  }
+
+  Future<void> setupThemeManager() async {
+    // 0. Consider saved preferences first
+    final savedBrightness = await _preferences.getSavedBrightness();
+    final savedThemeIndex = await _preferences.getSavedThemeIndex();
+
+    // Both preferences are successfully saved, and we can restore them
+    if (savedThemeIndex != null && savedBrightness != null) {
+      final T? targetTheme = widget.themes.elementAtOrNull(savedThemeIndex);
+      if (targetTheme != null) {
+        _currentTheme = targetTheme;
+        _brightness = savedBrightness;
+      } else {
+        _brightness = savedBrightness;
+        final T? targetTheme = widget.themes.firstWhereOrNull(
+            (t) => t.brightness == widget.initialBrightness!.dart);
+
+        if (targetTheme != null) {
+          _currentTheme = targetTheme;
+        } else {
+          _currentTheme = widget.themes.first;
+        }
+      }
+
+      _syncPreferencesAndRebuild();
+      return;
+    }
+
+    // No preferences were stored, this is likely app's first run, fallback to widget settings
+
     // 1. Prioritize initialTheme if provided
     if (widget.initialTheme != null) {
       _currentTheme = widget.initialTheme!;
       _brightness = (widget.initialTheme!.brightness == Brightness.light)
           ? ThemeBrightness.light
           : ThemeBrightness.dark;
+      _syncPreferencesAndRebuild();
       return;
     }
 
@@ -75,6 +115,7 @@ class _ThemeManagerState<T extends ColorThemeSchema>
         _currentTheme = widget.themes.first;
       }
 
+      _syncPreferencesAndRebuild();
       return;
     }
 
@@ -90,6 +131,10 @@ class _ThemeManagerState<T extends ColorThemeSchema>
     }
 
     _brightness = _currentTheme.themeBrightness;
+
+    // Rebuild the widget upon completing setup
+    _syncPreferencesAndRebuild();
+    return;
   }
 
   /// Set app's current theme. This will also override current brightness to match the theme's brightness.
@@ -102,6 +147,8 @@ class _ThemeManagerState<T extends ColorThemeSchema>
       _currentTheme = theme;
       _brightness = theme.themeBrightness;
     });
+
+    _syncPreferences();
   }
 
   /// Set app's current brightness settings. If possible, first available theme matching desired brightness will be applied.
@@ -111,18 +158,21 @@ class _ThemeManagerState<T extends ColorThemeSchema>
       _brightness = brightness;
     });
 
-    if (_currentTheme.themeBrightness == brightness) {
+    if (_currentTheme.brightness == brightness.dart) {
+      _syncPreferences();
       return;
     }
 
-    final T? targetTheme =
-        widget.themes.firstWhereOrNull((t) => t.brightness == brightness.dart);
+    final T? targetTheme = widget.themes
+        .firstWhereOrNull((theme) => theme.brightness == brightness.dart);
 
     if (targetTheme != null) {
       setState(() {
         _currentTheme = targetTheme;
       });
     }
+
+    _syncPreferences();
   }
 
   /// Toggle between [Brightness.light] and [Brightness.dark] theme mode.
@@ -133,6 +183,16 @@ class _ThemeManagerState<T extends ColorThemeSchema>
           ? ThemeBrightness.dark
           : ThemeBrightness.light,
     );
+  }
+
+  void _syncPreferences() {
+    _preferences.saveBrightness(_brightness);
+    _preferences.saveTheme(_currentTheme, widget.themes);
+  }
+
+  void _syncPreferencesAndRebuild() {
+    _syncPreferences();
+    setState(() {});
   }
 
   @override
