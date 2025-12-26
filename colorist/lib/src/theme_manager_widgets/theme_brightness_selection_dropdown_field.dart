@@ -15,7 +15,7 @@ class ThemeBrightnessSelectionDropdownField extends StatelessWidget {
   final String label;
 
   /// String builder for each theme brightness option.
-  final String Function(ThemeBrightness)? optionNameBuilder;
+  final String Function(ThemeBrightness brightness)? optionNameBuilder;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +30,8 @@ class ThemeBrightnessSelectionDropdownField extends StatelessWidget {
           .map(
             (brightnessOption) => DropdownMenuItem(
               value: brightnessOption,
-              child: Text(optionNameBuilder?.call(brightnessOption) ?? brightnessOption.name),
+              child: Text(optionNameBuilder?.call(brightnessOption) ??
+                  brightnessOption.name),
             ),
           )
           .toList(),

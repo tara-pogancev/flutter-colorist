@@ -9,30 +9,53 @@ const String _themeIndexKey = 'colorist_selected_theme_index';
 /// Persistence is handled using the `shared_preferences` package, and will override initial settings provided
 /// with [ThemeManager] root widget if available.
 class ColoristPreferences {
-  ColoristPreferences();
+  static late SharedPreferences _preferences;
+  static bool _initialized = false;
 
-  Future<SharedPreferences> get _preferences async =>
-      await SharedPreferences.getInstance();
+  static final ColoristPreferences _instance = ColoristPreferences._();
+  ColoristPreferences._();
 
-  void saveBrightness(ThemeBrightness brightness) async {
-    (await _preferences).setInt(_brightnessIndexKey, brightness.index);
+  static Future<void> init() async {
+    if (!_initialized) {
+      _preferences = await SharedPreferences.getInstance();
+      _initialized = true;
+    }
+  }
+
+  /// Getter for ColoristPreferences, ensuring initialization has occurred.
+  /// Do not use this unless you are certain that [ColoristPreferences.init] has been called.
+  static ColoristPreferences get instance {
+    assert(_initialized,
+        '[await ThemeManager.init()] must be called first before runApp()');
+    return _instance;
+  }
+
+  /// Safe getter for ColoristPreferences, ensuring initialization has occurred.
+  /// The gettes is async, as it will always check and perform initialization if needed.
+  static Future<ColoristPreferences> get safeInstance async {
+    await init();
+    return _instance;
+  }
+
+  void saveBrightness(ThemeBrightness brightness) {
+    _preferences.setInt(_brightnessIndexKey, brightness.index);
   }
 
   void saveTheme(
-      ColorThemeSchema theme, List<ColorThemeSchema> availableThemes) async {
+      ColorThemeSchema theme, List<ColorThemeSchema> availableThemes) {
     // Selecting the current theme's index from all available themes
     final index = availableThemes.indexOf(theme);
 
     if (index == -1) {
       // If the theme's index is not found, default to the first available theme
-      (await _preferences).setInt(_themeIndexKey, 0);
+      _preferences.setInt(_themeIndexKey, 0);
     } else {
-      (await _preferences).setInt(_themeIndexKey, index);
+      _preferences.setInt(_themeIndexKey, index);
     }
   }
 
-  Future<ThemeBrightness?> getSavedBrightness() async {
-    final brightnessIndex = (await _preferences).getInt(_brightnessIndexKey);
+  ThemeBrightness? getSavedBrightness() {
+    final brightnessIndex = _preferences.getInt(_brightnessIndexKey);
     if (brightnessIndex == null) {
       return null;
     } else {
@@ -40,7 +63,7 @@ class ColoristPreferences {
     }
   }
 
-  Future<int?> getSavedThemeIndex() async {
-    return (await _preferences).getInt(_themeIndexKey);
+  int? getSavedThemeIndex() {
+    return _preferences.getInt(_themeIndexKey);
   }
 }

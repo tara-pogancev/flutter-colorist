@@ -27,6 +27,10 @@ class ThemeManager<T extends ColorThemeSchema> extends StatefulWidget {
     return inherited!.controller;
   }
 
+  static Future<void> init() async {
+    await ColoristPreferences.init();
+  }
+
   @override
   State<ThemeManager<T>> createState() => _ThemeManagerState<T>();
 }
@@ -36,7 +40,7 @@ class _ThemeManagerState<T extends ColorThemeSchema>
   late T _currentTheme;
   late ThemeBrightness _brightness;
 
-  final ColoristPreferences _preferences = ColoristPreferences();
+  late final ColoristPreferences _preferences;
 
   @override
   void initState() {
@@ -63,26 +67,33 @@ class _ThemeManagerState<T extends ColorThemeSchema>
     setupThemeManager();
   }
 
-  Future<void> setupThemeManager() async {
+  void setupThemeManager() {
+    _preferences = ColoristPreferences.instance;
+
     // 0. Consider saved preferences first
-    final savedBrightness = await _preferences.getSavedBrightness();
-    final savedThemeIndex = await _preferences.getSavedThemeIndex();
+    final savedBrightness = _preferences.getSavedBrightness();
+    final savedThemeIndex = _preferences.getSavedThemeIndex();
 
     // Both preferences are successfully saved, and we can restore them
     if (savedThemeIndex != null && savedBrightness != null) {
-      final T? targetTheme = widget.themes.elementAtOrNull(savedThemeIndex);
+      T? targetTheme;
+      if (savedThemeIndex >= 0 && savedThemeIndex < widget.themes.length) {
+        targetTheme = widget.themes.elementAtOrNull(savedThemeIndex);
+      }
       if (targetTheme != null) {
         _currentTheme = targetTheme;
         _brightness = savedBrightness;
       } else {
-        _brightness = savedBrightness;
-        final T? targetTheme = widget.themes.firstWhereOrNull(
-            (t) => t.brightness == widget.initialBrightness!.dart);
+        final T? targetTheme = widget.themes
+            .firstWhereOrNull((t) => t.brightness == _brightness.dart);
 
+        // We can match with the saved brightness
         if (targetTheme != null) {
           _currentTheme = targetTheme;
+          _brightness = savedBrightness;
         } else {
           _currentTheme = widget.themes.first;
+          _brightness = _currentTheme.themeBrightness;
         }
       }
 

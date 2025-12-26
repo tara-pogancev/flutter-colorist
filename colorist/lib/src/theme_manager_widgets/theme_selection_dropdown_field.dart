@@ -13,7 +13,7 @@ class ThemeSelectionDropdownField extends StatelessWidget {
 
   /// String builder for each theme option. It is highly recommended to implement this builder,
   /// as the default implementation does not provide descriptive names for themes.
-  final String Function(ColorThemeSchema)? themeNameBuilder;
+  final String Function(ColorThemeSchema theme)? themeNameBuilder;
 
   @override
   Widget build(BuildContext context) {

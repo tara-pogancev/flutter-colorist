@@ -5,7 +5,12 @@ import 'package:example/ui/demo_home_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+void main() async {
+  /// Add `WidgetsFlutterBinding.ensureInitialized()` to allow async operations before runApp
+  /// Before running the app, run `await ThemeManager.init()` to ensure correct preferences initialization.
+  WidgetsFlutterBinding.ensureInitialized();
+  await ThemeManager.init();
+
   runApp(const MyApp());
 }
 
