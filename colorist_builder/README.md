@@ -1,39 +1,24 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# Colorist // colorist_builder
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/tools/pub/writing-package-pages).
+## Palette Generator and Theme Manager Plugin
 
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/to/develop-packages).
--->
+🎨👨‍🎨 **Colorist** is a simple Flutter package, helping you manage all your custom theming needs from one place. Colorist is most suitable for apps with high level of UI customization, where a range of **custom-named** colors is required for easy development and design management.
 
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+<table>
+  <tr>
+    <td>
+      <img src="../colorist/assets/colorist_showcase.gif" style="max-height:300px; width:auto;" />
+    </td>
+    <td>
+      <img src="../colorist/assets/colorist_themes_example.png" style="max-height:300px; width:auto;"/>
+    </td>
+  </tr>
+</table>
 
-## Features
+---
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+### ℹ️ Notice
 
-## Getting started
-
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
-
-## Usage
-
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
-
-```dart
-const like = 'sample';
-```
-
-## Additional information
-
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+> This is a helper plugin for **Colorist**.
+>
+> For instructions on how to use install and use the package, please refer to the main **`Colorist`** package `README.md`, or _`pub.dev`_ page.
