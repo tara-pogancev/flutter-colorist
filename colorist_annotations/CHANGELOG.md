@@ -1,4 +1,5 @@
 ## 0.0.1
 
-- Initial release! 
-
+- **Initial release**
+- `@ColorTheme` annotation
+- Color getter generation options

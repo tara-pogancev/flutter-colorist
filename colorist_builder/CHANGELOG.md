@@ -1,3 +1,4 @@
 ## 0.0.1
 
-* TODO: Describe initial release.
+- **Initial release**
+- Generate `.g.dart` files with boilerplate code for supporting `@ColorTheme` annotation
