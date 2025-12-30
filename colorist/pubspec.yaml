@@ -3,7 +3,6 @@ description: "Flutter code generator for custom-named color palettes."
 repository: https://github.com/tara-pogancev/flutter-colorist
 issue_tracker: https://github.com/tara-pogancev/flutter-colorist/issues
 version: 0.0.1
-publish_to: "none"
 
 environment:
   sdk: ">=3.0.0 <4.0.0"
