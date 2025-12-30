@@ -32,13 +32,22 @@
 
 ### Plugin installation
 
-You will need to add colorist as a dependency, and colorist_builder as a dev_dependency. The plugin uses build_runner for generating boilerplate code.
+You will need to add colorist as a dependency, and colorist_builder and build_runner as a dev_dependency. The plugin uses build_runner for generating boilerplate code.
+
+```bash
+flutter pub add colorist
+```
+
+```bash
+flutter pub add --dev build_runner colorist_builder
+```
 
 ```yaml
 dependencies:
   colorist: latest
 
 dev_dependencies:
+  build_runner: latest
   colorist_builder: latest
 ```
 
@@ -190,6 +199,7 @@ ThemeManager<AppColorTheme>(
             },
           )
 ```
+
 > Consider completely restarting the app after this step.
 
 _That's it!_ 🎉 You can now easily access your colors and manage active theme!
