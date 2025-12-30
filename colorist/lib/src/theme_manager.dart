@@ -1,4 +1,3 @@
-// ignore: depend_on_referenced_packages
 import 'package:collection/collection.dart';
 import 'package:colorist/colorist.dart';
 import 'package:colorist/src/colorist_preferences/colorist_preferences.dart';
