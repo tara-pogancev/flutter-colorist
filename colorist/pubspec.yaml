@@ -12,8 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
   meta: ^1.16.0
-  colorist_annotations:
-    path: ../colorist_annotations
+  colorist_annotations: ^0.0.1
   shared_preferences: ">=2.4.0 <3.0.0"
 
 dev_dependencies:

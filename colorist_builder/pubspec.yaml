@@ -13,8 +13,7 @@ dependencies:
   analyzer: ">=7.5.9 <9.0.0"
   build: ">=3.0.0 <5.0.0"
   source_gen: ">=3.0.0 <5.0.0"
-  colorist_annotations:
-    path: ../colorist_annotations
+  colorist_annotations: ^0.0.1
 
 dev_dependencies:
   flutter_lints: any
