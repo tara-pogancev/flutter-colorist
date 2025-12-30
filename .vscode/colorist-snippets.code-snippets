@@ -1,0 +1,30 @@
+{
+  "Colorist Theme Schema": {
+    "prefix": "colorist-theme",
+    "scope": "dart",
+    "description": "Generates the abstract class boilerplate for a custom color theme using @ColorTheme annotation with Colorist.",
+    "body": [
+      "import 'package:colorist_annotations/colorist_annotations.dart';",
+      "import 'package:colorist/colorist.dart';",
+      "",
+      "part '${TM_FILENAME}.g.dart';",
+      "",
+      "@ColorTheme()",
+      "abstract class ${2:AppColorTheme} with _\\$${2:AppColorTheme} {",
+      "  const factory ${2:AppColorTheme}({",
+      "    required Brightness brightness,",
+      "    // Add all custom colors here",
+      "    required Color primary,",
+      "  }) = _${2:AppColorTheme};",
+      "",
+      "  @override",
+      "  // TODO: implement themeData getter for MaterialApp support",
+      "  ThemeData? get themeData => null;",
+      "",
+      "  @override",
+      "  // TODO: implement cupertinoThemeData getter for CupertinoApp support",
+      "  CupertinoThemeData? get cupertinoThemeData => null;",
+      "}"
+    ]
+  }
+}

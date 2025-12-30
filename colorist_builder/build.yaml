@@ -1,0 +1,16 @@
+targets:
+  $default:
+    builders:
+      colorist_builder|colorist:
+        generate_for:
+          - lib/**
+        options:
+          enabled: true
+
+builders:
+  colorist:
+    import: "package:colorist_builder/colorist_builder.dart"
+    builder_factories: ["coloristBuilder"]
+    build_extensions: { ".dart": [".g.dart"] }
+    auto_apply: dependents
+    build_to: source
