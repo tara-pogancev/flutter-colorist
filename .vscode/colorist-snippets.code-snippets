@@ -4,10 +4,10 @@
     "scope": "dart",
     "description": "Generates the abstract class boilerplate for a custom color theme using @ColorTheme annotation with Colorist.",
     "body": [
-      "import 'package:colorist_annotations/colorist_annotations.dart';",
       "import 'package:colorist/colorist.dart';",
+      "import 'package:flutter/material.dart';",
       "",
-      "part '${TM_FILENAME}.g.dart';",
+      "part '${TM_FILENAME_BASE}.g.dart';",
       "",
       "@ColorTheme()",
       "abstract class ${2:AppColorTheme} with _\\$${2:AppColorTheme} {",
@@ -18,12 +18,28 @@
       "  }) = _${2:AppColorTheme};",
       "",
       "  @override",
-      "  // TODO: implement themeData getter for MaterialApp support",
-      "  ThemeData? get themeData => null;",
+      "  // TODO: (Optional) implement themeData getter for MaterialApp support",
+      "  ThemeData get themeData => null;",
       "",
       "  @override",
-      "  // TODO: implement cupertinoThemeData getter for CupertinoApp support",
-      "  CupertinoThemeData? get cupertinoThemeData => null;",
+      "  // TODO: (Optional) implement cupertinoThemeData getter for CupertinoApp support",
+      "  CupertinoThemeData get cupertinoThemeData => null;",
+      "}"
+    ]
+  },
+  "Colorist Material ThemeData": {
+    "prefix": "colorist-theme-data",
+    "scope": "dart",
+    "description": "Generates a function for getting Material ThemeData based on a provided Colorist ColorTheme.",
+    "body": [
+      "ThemeData _getColoristThemeData(${1:AppColorTheme} theme) {",
+      " return ThemeData(",
+      "   brightness: theme.brightness,",
+      "   colorSchemeSeed: theme.primary,",
+      "   extensions: [",
+      "     theme.themeExtension,",
+      "   ],",
+      " );",
       "}"
     ]
   }

@@ -7,10 +7,10 @@
 <table>
   <tr>
     <td>
-      <img src="../colorist/assets/colorist_showcase.gif" style="max-height:300px; width:auto;" />
+      <img src="https://raw.githubusercontent.com/tara-pogancev/flutter-colorist/refs/heads/main/colorist/assets/colorist_showcase.gif" style="max-height:300px; width:auto;" />
     </td>
     <td>
-      <img src="../colorist/assets/colorist_themes_example.png" style="max-height:300px; width:auto;"/>
+      <img src="https://raw.githubusercontent.com/tara-pogancev/flutter-colorist/refs/heads/main/colorist/assets/colorist_themes_example.png" style="max-height:300px; width:auto;"/>
     </td>
   </tr>
 </table>

@@ -11,10 +11,10 @@
 <table>
   <tr>
     <td>
-      <img src="assets/colorist_showcase.gif" style="max-height:300px; width:auto;"/>
+      <img src="https://raw.githubusercontent.com/tara-pogancev/flutter-colorist/refs/heads/main/colorist/assets/colorist_showcase.gif" style="max-height:300px; width:auto;"/>
     </td>
     <td>
-      <img src="assets/colorist_themes_example.png" style="max-height:300px; width:auto;" />
+      <img src="https://raw.githubusercontent.com/tara-pogancev/flutter-colorist/refs/heads/main/colorist/assets/colorist_themes_example.png" style="max-height:300px; width:auto;" />
     </td>
   </tr>
 </table>
@@ -30,6 +30,18 @@
 
 ## Getting started
 
+### Plugin installation
+
+You will need to add colorist as a dependency, and colorist_builder as a dev_dependency. The plugin uses build_runner for generating boilerplate code.
+
+```yaml
+dependencies:
+  colorist: latest
+
+dev_dependencies:
+  colorist_builder: latest
+```
+
 ### 1. Defining app's color theme
 
 Most likely, one color schema will be used by your project. This is where you can define all colors that will be used in it. This can always easily be expanded in the future.
@@ -37,6 +49,11 @@ Most likely, one color schema will be used by your project. This is where you ca
 This is an example of a **ColorTheme** defined for our app. If you are familiar with the Freezed package, you will find a likeness iin how the abstract class is defined. Feel free to copy this part of the code into your own app, and make changed to the constructor section.
 
 ```dart
+import 'package:colorist/colorist.dart';
+import 'package:flutter/material.dart';
+
+part 'theme.g.dart';
+
 @ColorTheme(name: 'Primary app theme schema')
 abstract class AppColorTheme with _$AppColorTheme {
   const factory AppColorTheme({
@@ -62,7 +79,9 @@ abstract class AppColorTheme with _$AppColorTheme {
 }
 ```
 
-#### Define Material or Cupertino ThemeData (Optional)
+> Consider using the `colorist snippet` for easily inserting this part of the code. The snippet is vailable on GitHub, in the `.vscode` folder.
+
+#### Define Material or Cupertino ThemeData (Optional) (Recommended)
 
 `themeData` and `cupertinoThemeData` are optional getters. If one or both are provided, the generated file will also create theme/context extensions for easier access to colors, via `context.colors`.
 
@@ -70,15 +89,30 @@ If your app uses both Cupertino and Material Themes (e.g. for OS-adaptive UI), t
 
 Please refer to the example project to see how `getForColorTheme(this)` functions were implemented. Allthough it is just an example, any implementation approach will work.
 
+> ℹ️ If you implement Material ThemeData getter, it's very important you include `extensions: [theme.extensions]`. The `.colors` getter will not work otherwise, as it considers itself an extension. 🙂 You can define all your extensions here as well (styling, typography, etc.).
+
+```dart
+ThemeData _getColoristThemeData(AppColorTheme theme) {
+ return ThemeData(
+   brightness: theme.brightness,
+   colorSchemeSeed: theme.primary,
+   extensions: [
+     theme.themeExtension,
+   ],
+ );
+}
+```
+
 ### 2. Run build runner
 
 Colorist uses build runner for generating boilerplate code. Make sure colorist_builder and build_runner are added to `pubspec.yaml`.
 
-```yaml
-dev_dependencies:
-  ...
-  build_runner: ^2.9.0
-  colorist_builder: ^0.0.1
+```bash
+flutter pub add colorist
+```
+
+```bash
+flutter pub add --dev build_runner colorist_builder
 ```
 
 Then run:
@@ -156,6 +190,7 @@ ThemeManager<AppColorTheme>(
             },
           )
 ```
+> Consider completely restarting the app after this step.
 
 _That's it!_ 🎉 You can now easily access your colors and manage active theme!
 
@@ -202,7 +237,7 @@ const ColoristThemeDebugWidget(),
 
 </td>
 <td style="vertical-align: top;">
-<img src="assets/premade_ui_example.png" style="max-height:300px; width:auto;" />
+<img src="https://raw.githubusercontent.com/tara-pogancev/flutter-colorist/refs/heads/main/colorist/assets/premade_ui_example.png" style="max-height:300px; width:auto;" />
 </td>
 
   </tr>
