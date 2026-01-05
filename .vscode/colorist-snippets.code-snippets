@@ -18,11 +18,11 @@
       "  }) = _${2:AppColorTheme};",
       "",
       "  @override",
-      "  // TODO: (Optional) implement themeData getter for MaterialApp support",
+      "  // TODO: Implement themeData getter if using MaterialApp, otherwise delete",
       "  ThemeData get themeData => null;",
       "",
       "  @override",
-      "  // TODO: (Optional) implement cupertinoThemeData getter for CupertinoApp support",
+      "  // TODO: Implement cupertinoThemeData getter if using CupertinoApp, otherwise delete",
       "  CupertinoThemeData get cupertinoThemeData => null;",
       "}"
     ]
