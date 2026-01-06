@@ -61,7 +61,7 @@ This is an example of a **ColorTheme** defined for our app. If you are familiar 
 import 'package:colorist/colorist.dart';
 import 'package:flutter/material.dart';
 
-part 'theme.g.dart';
+part 'theme.colorist.g.dart';
 
 @ColorTheme(name: 'Primary app theme schema')
 abstract class AppColorTheme with _$AppColorTheme {

@@ -1,3 +1,8 @@
+## 0.0.2
+
+- Changing the prefix of the generated files from '.g.dart' to '.colorist.g.dart' to avoid colisions with other code-generating packages
+- Updating VS Code snippets to match new file prefix
+
 ## 0.0.1+2
 
 - Changed `analyzer` dependency version
