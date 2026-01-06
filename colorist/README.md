@@ -210,6 +210,16 @@ _That's it!_ 🎉 You can now easily access your colors and manage active theme!
 
 ## Usage
 
+### Accessing custom defined colors
+
+```dart
+context.colors
+```
+
+To access colors defined for your app's ColorTheme, use the extension getter `context.colors`.
+
+Colors accessed via context will automatically update when a theme or brightness change occurs.
+
 ### Changing active theme
 
 ```dart

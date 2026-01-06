@@ -1,3 +1,7 @@
+## 0.0.2
+
+- Improve README information on themeData getters setup and use
+
 ## 0.0.1+1
 
 - Improved README for easier setup
