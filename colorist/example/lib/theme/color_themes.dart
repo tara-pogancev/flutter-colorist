@@ -3,7 +3,7 @@ import 'package:example/theme/cupertino_app_theme.dart';
 import 'package:example/theme/material_app_theme.dart';
 import 'package:flutter/material.dart';
 
-part 'color_themes.g.dart';
+part 'color_themes.colorist.g.dart';
 
 @ColorTheme(name: 'Primary app theme schema', colorsGetterGeneration: ColorsGetterGeneration.auto)
 abstract class AppColorTheme with _$AppColorTheme {

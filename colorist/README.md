@@ -61,7 +61,7 @@ This is an example of a **ColorTheme** defined for our app. If you are familiar 
 import 'package:colorist/colorist.dart';
 import 'package:flutter/material.dart';
 
-part 'theme.g.dart';
+part 'theme.colorist.g.dart';
 
 @ColorTheme(name: 'Primary app theme schema')
 abstract class AppColorTheme with _$AppColorTheme {
@@ -78,11 +78,11 @@ abstract class AppColorTheme with _$AppColorTheme {
     required Color white,
   }) = _AppColorTheme;
 
-  // Optional
+  // Implement if using MaterialApp, otherwise delete
   @override
   ThemeData get themeData => MaterialAppTheme.getForColorTheme(this);
 
-  // Optional
+  // Implement if using CupertinoApp, otherwise delete
   @override
   CupertinoThemeData get cupertinoThemeData => CupertinoAppTheme.getForColorTheme(this);
 }
@@ -90,11 +90,15 @@ abstract class AppColorTheme with _$AppColorTheme {
 
 > Consider using the `colorist snippet` for easily inserting this part of the code. The snippet is vailable on GitHub, in the `.vscode` folder.
 
-#### Define Material or Cupertino ThemeData (Optional) (Recommended)
+#### Define Material or Cupertino ThemeData
 
 `themeData` and `cupertinoThemeData` are optional getters. If one or both are provided, the generated file will also create theme/context extensions for easier access to colors, via `context.colors`.
 
 If your app uses both Cupertino and Material Themes (e.g. for OS-adaptive UI), two getters generated will be `context.colors` and `context.cupertinoColors`. Generation of getters can still be manually set by passing the `colorsGetterGeneration` parameter of the annotation itself. By default, it will decide automatically based on ThemeData getters providers.
+
+> ℹ️ It is important to implement at least one of these getters, according to your app's widget base (`MaterialApp` or `CupertinoApp`). The builder we use in the upcoming steps will require a relevant ThemeData be passed with the ColorTheme. Otherwise, your app will fail to run.
+>
+> There is no need to define both, unless your app uses both MaterialApp and CupertinoApp base widgets (for adaptive UI, like in the example).
 
 Please refer to the example project to see how `getForColorTheme(this)` functions were implemented. Allthough it is just an example, any implementation approach will work.
 
@@ -205,6 +209,16 @@ ThemeManager<AppColorTheme>(
 _That's it!_ 🎉 You can now easily access your colors and manage active theme!
 
 ## Usage
+
+### Accessing custom defined colors
+
+```dart
+context.colors
+```
+
+To access colors defined for your app's ColorTheme, use the extension getter `context.colors`.
+
+Colors accessed via context will automatically update when a theme or brightness change occurs.
 
 ### Changing active theme
 

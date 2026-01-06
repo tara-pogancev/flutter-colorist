@@ -4,7 +4,7 @@ import 'package:source_gen/source_gen.dart';
 
 Builder coloristBuilder(BuilderOptions options) => PartBuilder(
       [ColoristThemeGenerator()],
-      '.g.dart',
+      '.colorist.g.dart',
       header: '''
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file

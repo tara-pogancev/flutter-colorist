@@ -11,9 +11,11 @@ dependencies:
   flutter:
     sdk: flutter
 
-  cupertino_icons: ^1.0.8
   colorist:
     path: ../
+  freezed: ^3.2.4
+  freezed_annotation: ^3.1.0
+  json_annotation: ^4.9.0
 
 dev_dependencies:
   flutter_test:
@@ -21,7 +23,9 @@ dev_dependencies:
 
   flutter_lints: ^5.0.0
   build_runner: ^2.9.0
-  colorist_builder: ^0.0.1
+  colorist_builder:
+    path: ../../colorist_builder/
+  json_serializable: ^6.11.3
 
 flutter:
   uses-material-design: true

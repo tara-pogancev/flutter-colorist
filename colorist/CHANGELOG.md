@@ -1,3 +1,8 @@
+## 0.0.2
+
+- Changed generated file prefix from '.g.dart' to '.colorist.g.dart' to avoid collisions with other code-generating packages
+- Improve README information on themeData getters setup and use, as well as on context.colors getter
+
 ## 0.0.1+1
 
 - Improved README for easier setup
